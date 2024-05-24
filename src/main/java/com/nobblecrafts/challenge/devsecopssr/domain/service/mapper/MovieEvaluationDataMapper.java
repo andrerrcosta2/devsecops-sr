@@ -18,11 +18,12 @@ public class MovieEvaluationDataMapper {
                 .build();
     }
 
-    public MovieDetailsWithEvaluation toMovieDetailsEvaluated(TMDBMovieDetails movieDetails, MovieStatus status) {
+    public MovieDetailsWithEvaluation toMovieDetailsWithEvaluation(TMDBMovieDetails movieDetails, MovieStatus status) {
         return MovieDetailsWithEvaluation.builder()
                 .movieDetails(movieDetails)
                 .status(status)
                 .build();
     }
+
 
 }

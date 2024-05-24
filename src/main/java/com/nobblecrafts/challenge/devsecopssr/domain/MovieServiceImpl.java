@@ -44,9 +44,9 @@ public class MovieServiceImpl implements MovieService {
                 .findByUserActivityIdAndMovieId(accountId, movieId);
 
         if (movieEvaluation.isPresent()) {
-            return movieEvaluationDataMapper.toMovieDetailsEvaluated(movieDetails, movieEvaluation.get().getStatus());
+            return movieEvaluationDataMapper.toMovieDetailsWithEvaluation(movieDetails, movieEvaluation.get().getStatus());
         } else {
-            return movieEvaluationDataMapper.toMovieDetailsEvaluated(movieDetails, MovieStatus.NONE);
+            return movieEvaluationDataMapper.toMovieDetailsWithEvaluation(movieDetails, MovieStatus.NONE);
         }
     }
 }

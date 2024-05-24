@@ -36,10 +36,12 @@ public class DomainSecurityContext {
         }
 
         Optional<AccountEntity> account = accountRepository.findByUsername(username.get());
+        log.info("requireCurrentSecurityAccountDTO: AllAccounts {}", accountRepository.findAll());
         if (username.isEmpty()) {
             log.error("System error. Current user couldn't not be found");
             throw new AccessDeniedException("Unauthorized");
         }
+        log.info("\n\nrequireCurrentSecurityAccountDTO: {}, {}\n\n", username, account);
         return account.map(mapper::securityAccountDTO).get();
     }
 

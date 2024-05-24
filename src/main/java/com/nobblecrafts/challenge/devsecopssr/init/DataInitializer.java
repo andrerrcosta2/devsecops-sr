@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@Profile("application-dev.yml")
+@Profile("dev")
 public class DataInitializer implements CommandLineRunner {
 
     private final AccountService accountService;

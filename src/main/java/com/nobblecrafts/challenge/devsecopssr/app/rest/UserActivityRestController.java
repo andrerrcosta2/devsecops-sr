@@ -16,33 +16,24 @@ import org.springframework.web.bind.annotation.*;
 public class UserActivityRestController {
     private final UserActivityService userActivityService;
 
-    @PostMapping("favorite")
-    public ResponseEntity<MovieDetailsWithEvaluation> markAsFavorite(@RequestBody @Valid MovieDetailsWithEvaluation evaluation) {
-        log.info("\nMARK AS FAVORITE: {}\n", evaluation);
-        MovieDetailsWithEvaluation output = userActivityService.evaluateMovie(MovieDetailsWithEvaluation.builder()
-                .movieDetails(evaluation.movieDetails())
-                .status(MovieStatus.FAVORITE)
-                .build());
+    @PostMapping("favorite/{movieId}")
+    public ResponseEntity<MovieDetailsWithEvaluation> markAsFavorite(@PathVariable("movieId") Long movieId) {
+        log.info("\nMARK AS FAVORITE: {}\n", movieId);
+        MovieDetailsWithEvaluation output = userActivityService.evaluateMovie(movieId, MovieStatus.FAVORITE);
         return ResponseEntity.ok().body(output);
     }
 
-    @PostMapping("want-to-watch")
-    public ResponseEntity<MovieDetailsWithEvaluation> markAsWantToWatch(@RequestBody @Valid MovieDetailsWithEvaluation evaluation) {
-        log.info("\nMARK AS WANT-TO-WATCH: {}\n", evaluation);
-        MovieDetailsWithEvaluation output = userActivityService.evaluateMovie(MovieDetailsWithEvaluation.builder()
-                .movieDetails(evaluation.movieDetails())
-                .status(MovieStatus.WANT_WATCH)
-                .build());
+    @PostMapping("want-to-watch/{movieId}")
+    public ResponseEntity<MovieDetailsWithEvaluation> markAsWantToWatch(@PathVariable("movieId") Long movieId) {
+        log.info("\nMARK AS WANT-TO-WATCH: {}\n", movieId);
+        MovieDetailsWithEvaluation output = userActivityService.evaluateMovie(movieId, MovieStatus.WANT_WATCH);
         return ResponseEntity.ok().body(output);
     }
 
-    @PostMapping("watched")
-    public ResponseEntity<MovieDetailsWithEvaluation> markAsWatched(@RequestBody @Valid MovieDetailsWithEvaluation evaluation) {
-        log.info("\nMARK AS WATCHED: {}\n", evaluation);
-        MovieDetailsWithEvaluation output = userActivityService.evaluateMovie(MovieDetailsWithEvaluation.builder()
-                .movieDetails(evaluation.movieDetails())
-                .status(MovieStatus.WATCHED)
-                .build());
+    @PostMapping("watched/{movieId}")
+    public ResponseEntity<MovieDetailsWithEvaluation> markAsWatched(@PathVariable("movieId") Long movieId) {
+        log.info("\nMARK AS WATCHED: {}\n", movieId);
+        MovieDetailsWithEvaluation output = userActivityService.evaluateMovie(movieId, MovieStatus.WATCHED);
         return ResponseEntity.ok().body(output);
     }
 }

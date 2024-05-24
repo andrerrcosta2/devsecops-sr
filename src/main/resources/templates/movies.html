@@ -17,10 +17,10 @@
     <div class="home-container">
         <div class="home-header">
             <div class="home-box home-header-title">
-                Movies
+                <a th:href="@{/home/movies}">Movies</a>
             </div>
-            <div class="home-box">
-                User Login Info
+            <div class="home-header-user-details">
+                <img th:src="@{/df.jpg}" style="width: 65px;">
             </div>
         </div>
 
@@ -42,7 +42,6 @@
         </div>
 
         <script src="/js/infinite-scroll.js"></script>
-        <script src="/js/movie-details.js"></script>
 
         <script th:inline="javascript">
             function loadMovieDetails(element) {

@@ -10,6 +10,7 @@ import com.nobblecrafts.challenge.devsecopssr.security.config.DomainSecurityConf
 import com.nobblecrafts.challenge.devsecopssr.security.config.OAuth2ConfigProperties;
 import com.nobblecrafts.challenge.devsecopssr.security.core.userdetails.AccountDetailsService;
 import com.nobblecrafts.challenge.devsecopssr.security.filter.JwtCookieFilter;
+import com.nobblecrafts.challenge.devsecopssr.security.filter.SessionExceptionCookieFilter;
 import com.nobblecrafts.challenge.devsecopssr.security.web.util.matcher.CSRFRequestMatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -50,6 +51,7 @@ public class SecurityConfig {
     private final JwtCookieFilter jwtCookieFilter;
     private final AccountDetailsService accountDetailsService;
     private final OAuth2ConfigProperties oAuth2ConfigProperties;
+    private final SessionExceptionCookieFilter sessionExceptionCookieFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -59,6 +61,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(sessionExceptionCookieFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
                 .userDetailsService(accountDetailsService)
                 .authorizeHttpRequests(this::httpRequestConfig);

@@ -2,53 +2,57 @@ function getCsrfToken() {
     return document.querySelector('input[name="_csrf"]').value;
 }
 
-function markFavorite(movieId) {
+function markFavorite(movieDetails) {
     const csrfToken = getCsrfToken();
-    fetch(`/movies/favorite/${movieId}`, {
+
+    fetch(`/user/activity/favorite/${movieDetails}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken
-        }
+        },
+        body: JSON.stringify(evaluation)
     })
     .then(response => response.json())
     .then(data => {
         console.log('Marked as favorite:', data);
-        // You can add some UI feedback here
     })
     .catch(error => console.error('Error marking as favorite:', error));
 }
 
-function markWantToWatch(movieId) {
+function markWantToWatch(movieDetails) {
     const csrfToken = getCsrfToken();
-    fetch(`/movies/want-to-watch/${movieId}`, {
+
+    const csrfToken = getCsrfToken();
+    fetch(`/user/activity/want-to-watch/${movieDetails}}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken
-        }
+        },
+        body: JSON.stringify(evaluation)
     })
     .then(response => response.json())
     .then(data => {
         console.log('Marked as want to watch:', data);
-        // You can add some UI feedback here
     })
     .catch(error => console.error('Error marking as want to watch:', error));
 }
 
-function markAlreadyWatched(movieId) {
+function markAlreadyWatched(movieDetails) {
     const csrfToken = getCsrfToken();
-    fetch(`/movies/already-watched/${movieId}`, {
+
+    fetch(`/user/activity/already-watched/${movieDetails}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken
-        }
+        },
+        body: JSON.stringify(evaluation)
     })
     .then(response => response.json())
     .then(data => {
         console.log('Marked as already watched:', data);
-        // You can add some UI feedback here
     })
     .catch(error => console.error('Error marking as already watched:', error));
 }

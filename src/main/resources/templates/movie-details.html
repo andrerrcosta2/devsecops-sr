@@ -15,12 +15,16 @@
 <div class="home-container">
     <div class="home-header">
         <div class="home-box home-header-title">
-            Movies
+            <a th:href="@{/home/movies}">Movies</a>
         </div>
-        <div class="home-box">
-            User Login Info
+        <div class="home-header-user-details">
+            <img th:src="@{/df.jpg}" style="width: 65px;">
         </div>
     </div>
+
+    <form th:action="@{/auth/login}" th:object="${loginRequest}" method="post" class="hidden-element">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    </form>
 
     <div class="home-movie-details-box">
         <div class="home-movie-details-poster">
@@ -28,26 +32,124 @@
         </div>
         <div class="home-movie-details-content">
             <div>
-                <h2 th:text="${details.movieDetails.title}"></h2>
+                <div class="home-movie-details-content-title">
+                    <h2 th:text="${details.movieDetails.title}"></h2>
+                    <div class="home-movie-details-content-status">
+                        <p><span th:text="${details.status}"></span></p>
+                        <div th:if="${details.status} == 'FAVORITE'" class="home-movie-action-btn-icon">&#9733;</div>
+                        <div th:if="${details.status} == 'WANT_TO_WATCH'" class="home-movie-action-btn-icon">&#10010;
+                        </div>
+                        <div th:if="${details.status} == 'WATCHED'" class="home-movie-action-btn-icon">&#10004;</div>
+                    </div>
+                </div>
                 <p th:text="${details.movieDetails.overview}"></p>
                 <p>Release Date: <span th:text="${details.movieDetails.releaseDate}"></span></p>
                 <p>Genres: <span th:text="${details.movieDetails.genres}"></span></p>
-                <p>Rating: <span th:text="${details.movieDetails.voteAverage}"></span></p>
+                <p>Rating:
+                    <span th:text="${details.movieDetails.voteAverage}">
+                    </span>
+                </p>
 
             </div>
             <div class="home-movie-actions">
-                <a href="javascript:void(0)" th:onclick="'markFavorite(' + ${details.movieDetails.id} + ')'">
-                    <img src="/static/favorite.png" alt="Favorite"/>
+                <a href="javascript:void(0)" th:onclick="'markFavorite(' + ${details.movieDetails.id} + ')'"
+                   class="home-movie-action-btn">
+                    <div th:if="${details.status} == 'FAVORITE'" class="home-movie-action-btn-box">
+                        <div class="home-movie-action-btn-icon">&#9733;</div>
+                        <p style="color: aqua"> Favorite</p>
+                    </div>
+                    <div th:if="${details.status} != 'FAVORITE'" class="home-movie-action-btn-box">
+                        <div class="home-movie-action-btn-icon">&#9734;</div>
+                        <p style="color: aqua"> Favorite</p>
+                    </div>
                 </a>
-                <a href="javascript:void(0)" th:onclick="'markWantToWatch(' + ${details.movieDetails.id} + ')'">
-                    <img src="/static/add.png" alt="Want to Watch"/>
+                <a href="javascript:void(0)" th:onclick="'markWantToWatch(' + ${details.movieDetails.id} + ')'"
+                   class="home-movie-action-btn">
+                    <div th:if="${details.status} == 'WANT_TO_WATCH'" class="home-movie-action-btn-box">
+                        <div class="home-movie-action-btn-icon">&#10010;</div>
+                        <p style="color: greenyellow"> I want to watch</p>
+                    </div>
+                    <div th:if="${details.status} != 'WANT_TO_WATCH'" class="home-movie-action-btn-box">
+                        <div class="home-movie-action-btn-icon">&#10009;</div>
+                        <p style="color: greenyellow"> I want to watch</p>
+                    </div>
                 </a>
-                <a href="javascript:void(0)" th:onclick="'markAlreadyWatched(' + ${details.movieDetails.id} + ')'">
-                    <img src="/static/checked.png" alt="Already Watched"/>
+                <a href="javascript:void(0)" th:onclick="'markAlreadyWatched(' + ${details.movieDetails.id} + ')'"
+                   class="home-movie-action-btn">
+                    <div th:if="${details.status} == 'WANT_TO_WATCH'" class="home-movie-action-btn-box">
+                        <div class="home-movie-action-btn-icon">&#10003;</div>
+                        <p style="color: mediumpurple"> Watched</p>
+                    </div>
+                    <div th:if="${details.status} != 'WANT_TO_WATCH'" class="home-movie-action-btn-box">
+                        <div class="home-movie-action-btn-icon">&#10004;</div>
+                        <p style="color: mediumpurple"> Watched</p>
+                    </div>
                 </a>
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+
+        console.log("Script loaded");
+
+        function getCsrfToken() {
+            return document.querySelector('input[name="_csrf"]').value;
+        }
+
+        function markFavorite(movieDetails) {
+            const csrfToken = getCsrfToken();
+
+            fetch(`/user/activity/favorite/${movieDetails}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Marked as favorite:', data);
+            })
+                .catch(error => console.error('Error marking as favorite:', error));
+        }
+
+        function markWantToWatch(movieDetails) {
+            const csrfToken = getCsrfToken();
+            fetch(`/user/activity/want-to-watch/${movieDetails}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Marked as want to watch:', data);
+            })
+                .catch(error => console.error('Error marking as want to watch:', error));
+        }
+
+        function markAlreadyWatched(movieDetails) {
+            const csrfToken = getCsrfToken();
+
+            fetch(`/user/activity/watched/${movieDetails}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Marked as already watched:', data);
+            })
+                .catch(error => console.error('Error marking as already watched:', error));
+        }
+
+
+    </script>
+
 </div>
 </body>
 </html>
