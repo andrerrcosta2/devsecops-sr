@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login-styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <title>Register</title>
+</head>
+<body>
+    <div class="df-container">
+        <div class="df-login-box">
+            <div class="df-login-box-title">
+                Register
+            </div>
+            <form th:action="@{/account/register}" th:object="${registerAccountRequest}" method="post" class="df-login-box-form">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <div class="df-box">
+                    <label for="username" class="df-form-label">Username</label>
+                    <input type="text"  th:field="*{username}" class="df-input" id="username" name="username"
+                           placeholder="Type your username" required>
+                </div>
+                <div class="df-box">
+                    <label for="password" class="df-form-label">Password</label>
+                    <input type="password" class="df-input" th:field="*{password}" id="password" name="password"
+                           placeholder="Type your password" required>
+                </div>
+                <button type="submit" class="df-login-button">Register</button>
+
+                <div th:if="${#fields.hasErrors('*')}" class="df-input-errors">
+
+                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+
+                </div>
+
+            </form>
+
+            <div class="df-input-errors" style="color: rgb(29, 29, 29)">
+                Login
+            </div>
+        </div>
+    </div>
+</body>
+</html>

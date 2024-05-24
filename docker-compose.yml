@@ -1,0 +1,66 @@
+version: '3.5'
+
+networks:
+  devsecops-network:
+    name: devsecops-network
+
+services:
+  db:
+    container_name: db
+    image: 'postgres:12-alpine'
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: devsecops-service
+    restart: unless-stopped
+    networks:
+      - devsecops-network
+
+  devsecops-service:
+    image: devsecops-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: deploy
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/devsecops-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_PUBLIC_KEY_LOCATION: classpath:certs/public-key.pem
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_PRIVATE_KEY_LOCATION: classpath:certs/private-key.pem
+      TMDB_ACCOUNT-ID: 21278728
+      TMDB_API-KEY: a9915e2ad51a410cb325482b631543a6
+      TMDB_ACCESS-TOKEN-AUTH: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOTkxNWUyYWQ1MWE0MTBjYjMyNTQ4MmI2MzE1NDNhNiIsInN1YiI6IjY2NGFhYmM4MGQ2NmRmMDFjYTkzMjMyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WBKYYDNrRVV6qE9dmMfoy6SHX3InoEQPu0qDX4Fw6Wk
+      APP_SECURITY_ALLOWED-ORIGIN: http://localhost:8080
+      APP_SECURITY_COOKIE-NAME: dsoappsession
+      TMDB_API_URL: https://api.themoviedb.org
+      TMDB_API_AUTH_PATH: /3/authentication
+      TMDB_API_DETAILS_PATH: /3/movie
+      TMDB_API_DISCOVER_PATH: /3/discover/movie
+    depends_on:
+      - db
+    networks:
+      - devsecops-network
+#    volumes:
+#      - ./target:/usr/app
+
+#    secrets:
+#      - private_key.pem
+#      - public_key.pem
+#volumes:
+#  devsecops-data:
+
+#secrets:
+#  private_key.pem:
+#    external: true
+#  public_key.pem:
+#    external: true

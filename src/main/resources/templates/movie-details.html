@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home-styles.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap"
+          rel="stylesheet">
+    <title>Movies</title>
+</head>
+<body>
+<div class="home-container">
+    <div class="home-header">
+        <div class="home-box home-header-title">
+            Movies
+        </div>
+        <div class="home-box">
+            User Login Info
+        </div>
+    </div>
+
+    <div class="home-movie-details-box">
+        <div class="home-movie-details-poster">
+            <img th:src="@{'http://image.tmdb.org/t/p/w300/' + ${details.movieDetails.posterPath}}" alt="Movie Poster">
+        </div>
+        <div class="home-movie-details-content">
+            <div>
+                <h2 th:text="${details.movieDetails.title}"></h2>
+                <p th:text="${details.movieDetails.overview}"></p>
+                <p>Release Date: <span th:text="${details.movieDetails.releaseDate}"></span></p>
+                <p>Genres: <span th:text="${details.movieDetails.genres}"></span></p>
+                <p>Rating: <span th:text="${details.movieDetails.voteAverage}"></span></p>
+
+            </div>
+            <div class="home-movie-actions">
+                <a href="javascript:void(0)" th:onclick="'markFavorite(' + ${details.movieDetails.id} + ')'">
+                    <img src="/static/favorite.png" alt="Favorite"/>
+                </a>
+                <a href="javascript:void(0)" th:onclick="'markWantToWatch(' + ${details.movieDetails.id} + ')'">
+                    <img src="/static/add.png" alt="Want to Watch"/>
+                </a>
+                <a href="javascript:void(0)" th:onclick="'markAlreadyWatched(' + ${details.movieDetails.id} + ')'">
+                    <img src="/static/checked.png" alt="Already Watched"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home-styles.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <title>Movies</title>
+</head>
+<body>
+    <div class="home-container">
+        <div class="home-header">
+            <div class="home-box home-header-title">
+                Movies
+            </div>
+            <div class="home-box">
+                User Login Info
+            </div>
+        </div>
+
+        <div class="home-content" id="movie-container" th:fragment="movie-list">
+            <div th:each="movie : ${movies}" class="home-movie-box-container">
+                <a href="javascript:void(0)" th:onclick="loadMovieDetails(this)" th:id="${movie.id}" class="home-movie-link">
+                <div class="home-movie-box" th:style="'background-image: url(http://image.tmdb.org/t/p/w300/' + ${movie.posterPath} + ')'">
+                        <div class="home-movie-info">
+                            <h2 th:text="${movie.title}"></h2>
+                            <p th:text="${movie.overview}"></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="home-footer">
+            <button id="load-more-btn">Load more</button>
+        </div>
+
+        <script src="/js/infinite-scroll.js"></script>
+        <script src="/js/movie-details.js"></script>
+
+        <script th:inline="javascript">
+            function loadMovieDetails(element) {
+                var movieId = element.getAttribute('id');
+                if (movieId) {
+                    var url = '/home/movies/' + movieId
+                    window.location.href = url;
+                } else {
+                    console.error("Movie ID is undefined or null.");
+                }
+            }
+        </script>
+
+    </div>
+</body>
+</html>

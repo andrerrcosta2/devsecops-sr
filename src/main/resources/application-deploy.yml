@@ -1,0 +1,65 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  datasource:
+    driverClassName: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    hikari:
+      auto-commit: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    defer-datasource-initialization: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true
+        show-sql: true
+        connection:
+          provider_disables_autocommit: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI}
+      rsa:
+        private-key: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_PRIVATE_KEY_LOCATION}
+        public-key: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_PUBLIC_KEY_LOCATION}
+
+
+devsecopsapp:
+  security:
+    api:
+      keys:
+        account-id: ${TMDB_ACCOUNT-ID}
+        api-key: ${TMDB_API-KEY}
+        access-token-auth: ${TMDB_ACCESS-TOKEN-AUTH}
+
+    allowed-origins:
+      - ${APP_SECURITY_ALLOWED-ORIGIN}
+    allowed-headers:
+      - Content-Type
+      - X-CSRF-TOKEN
+    cookie-name: ${APP_SECURITY_COOKIE-NAME}
+
+  integration:
+    api:
+      tmdb: ${TMDB_API_URL}
+      tmdb-auth-path:  ${TMDB_API_AUTH_PATH}
+      tmdb-movie-details-path: ${TMDB_API_DETAILS_PATH}
+      tmdb-movie-discover-path: ${TMDB_API_DISCOVER_PATH}

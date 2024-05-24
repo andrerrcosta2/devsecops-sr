@@ -1,0 +1,67 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  datasource:
+    driverClassName: org.h2.Driver
+    password: ''
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;
+    username: sa
+    hikari:
+      auto-commit: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    defer-datasource-initialization: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true
+        show-sql: true
+        connection:
+          provider_disables_autocommit: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080
+          secret-key: gsghXwbHBKHMvjUtBgGgQtJH4R1fPCDcgTKu5mkJA5w=
+          expiration: 3600000
+      rsa:
+        private-key: classpath:certs/private-key.pem
+        public-key: classpath:certs/public-key.pem
+
+devsecopsapp:
+
+  security:
+    api:
+      keys:
+        account-id: 21278728
+        api-key: a9915e2ad51a410cb325482b631543a6
+        access-token-auth: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOTkxNWUyYWQ1MWE0MTBjYjMyNTQ4MmI2MzE1NDNhNiIsInN1YiI6IjY2NGFhYmM4MGQ2NmRmMDFjYTkzMjMyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WBKYYDNrRVV6qE9dmMfoy6SHX3InoEQPu0qDX4Fw6Wk
+
+    allowed-origins:
+      - http://localhost:8080
+    allowed-headers:
+      - Content-Type
+      - X-CSRF-TOKEN
+    cookie-name: dsoappsession
+
+  integration:
+    api:
+      tmdb: https://api.themoviedb.org
+      tmdb-auth-path:  /3/authentication
+      tmdb-movie-details-path: /3/movie
+      tmdb-movie-discover-path: /3/discover/movie
