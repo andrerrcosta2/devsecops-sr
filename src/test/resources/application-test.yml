@@ -59,6 +59,8 @@ devsecopsapp:
       - X-CSRF-TOKEN
     cookie-name: dsoappsession
     cookie-max-age: 3600
+    cookie-domain: localhost
+    restrict-cookie-to-https: false
 
   integration:
     api:

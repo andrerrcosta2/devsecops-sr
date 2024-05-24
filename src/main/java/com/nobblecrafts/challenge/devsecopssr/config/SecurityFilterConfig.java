@@ -1,6 +1,7 @@
 package com.nobblecrafts.challenge.devsecopssr.config;
 
 import com.nobblecrafts.challenge.devsecopssr.security.config.DomainSecurityConfigProperties;
+import com.nobblecrafts.challenge.devsecopssr.security.context.DomainSecurityContext;
 import com.nobblecrafts.challenge.devsecopssr.security.filter.JwtCookieFilter;
 import com.nobblecrafts.challenge.devsecopssr.security.filter.SessionExceptionCookieFilter;
 import jakarta.servlet.*;
@@ -31,8 +32,8 @@ public class SecurityFilterConfig {
 
     @Bean
     public SessionExceptionCookieFilter sessionExceptionCookieFilter(UserDetailsService userDetailsService,
-                                                                     DomainSecurityConfigProperties domainSecurityConfigProperties) {
-        return new SessionExceptionCookieFilter(userDetailsService, domainSecurityConfigProperties);
+                                                                     DomainSecurityContext context) {
+        return new SessionExceptionCookieFilter(userDetailsService, context);
     }
 
     @Bean

@@ -2,8 +2,12 @@ package com.nobblecrafts.challenge.devsecopssr.security.context;
 
 import com.nobblecrafts.challenge.devsecopssr.dataaccess.account.entity.AccountEntity;
 import com.nobblecrafts.challenge.devsecopssr.dataaccess.account.repository.AccountJpaRepository;
+import com.nobblecrafts.challenge.devsecopssr.security.config.DomainSecurityConfigProperties;
 import com.nobblecrafts.challenge.devsecopssr.security.mapper.SecurityDomainMapper;
 import com.nobblecrafts.challenge.devsecopssr.security.model.SecurityAccountDTO;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -16,8 +20,12 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.util.StringUtils;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -25,6 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DomainSecurityContext {
     private final AccountJpaRepository accountRepository;
+    private final DomainSecurityConfigProperties properties;
     private final SecurityDomainMapper mapper;
 
     @Transactional(readOnly = true)
@@ -37,8 +46,9 @@ public class DomainSecurityContext {
 
         Optional<AccountEntity> account = accountRepository.findByUsername(username.get());
         log.info("requireCurrentSecurityAccountDTO: AllAccounts {}", accountRepository.findAll());
-        if (username.isEmpty()) {
+        if (account.isEmpty()) {
             log.error("System error. Current user couldn't not be found");
+            invalidateSession();
             throw new AccessDeniedException("Unauthorized");
         }
         log.info("\n\nrequireCurrentSecurityAccountDTO: {}, {}\n\n", username, account);
@@ -93,6 +103,36 @@ public class DomainSecurityContext {
     public boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String);
+    }
+
+    public void invalidateSession() {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes instanceof ServletRequestAttributes) {
+            HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+            HttpServletResponse response = ((ServletRequestAttributes) requestAttributes).getResponse();
+
+            if (request != null && response != null) {
+                SecurityContextHolder.clearContext();
+                invalidateCookie(response);
+                try {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session invalidated. Please log in again.");
+                } catch (IOException e) {
+                    log.error("Error sending error response", e);
+                }
+            } else {
+                log.error("Request or Response is null, cannot invalidate session or cookie");
+            }
+        } else {
+            log.error("RequestAttributes is not an instance of ServletRequestAttributes, cannot invalidate session or cookie");
+        }
+    }
+
+    public void invalidateCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(properties.getCookieName(), null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // Expire the cookie
+        response.addCookie(cookie);
     }
 
     private Optional<String> getCurrentUserLogin() {

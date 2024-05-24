@@ -25,6 +25,8 @@ public class AuthCookieHandler {
         cookie.setPath("/");
         cookie.setMaxAge(properties.getCookieMaxAge());
         cookie.setHttpOnly(true);
+        cookie.setDomain(properties.getCookieDomain());
+        cookie.setSecure(properties.isRestrictCookieToHttps());
         response.addCookie(cookie);
     }
 }

@@ -43,6 +43,8 @@ services:
       APP_SECURITY_ALLOWED-ORIGIN: http://localhost:8080
       APP_SECURITY_COOKIE-NAME: dsoappsession
       APP_SECURITY_COOKIE-MAX-AGE: 3600
+      APP_SECURITY_COOKIE-DOMAIN: localhost
+      APP_SECURITY_COOKIE-HTTPS-ONLY: false
       TMDB_API_URL: https://api.themoviedb.org
       TMDB_API_AUTH_PATH: /3/authentication
       TMDB_API_DETAILS_PATH: /3/movie

@@ -14,4 +14,6 @@ public class DomainSecurityConfigProperties {
     Set<String> allowedHeaders;
     String cookieName;
     int cookieMaxAge;
+    String cookieDomain;
+    boolean restrictCookieToHttps;
 }

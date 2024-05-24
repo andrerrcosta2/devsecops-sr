@@ -57,6 +57,8 @@ devsecopsapp:
       - X-CSRF-TOKEN
     cookie-name: ${APP_SECURITY_COOKIE-NAME}
     cookie-max-age: ${APP_SECURITY_COOKIE-MAX-AGE}
+    cookie-domain: ${APP_SECURITY_COOKIE-DOMAIN}
+    restrict-cookie-to-https: ${APP_SECURITY_COOKIE-HTTPS-ONLY}
 
   integration:
     api:
