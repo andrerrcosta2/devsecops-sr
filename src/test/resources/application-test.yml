@@ -1,3 +1,7 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 spring:
   thymeleaf:
     prefix: classpath:/templates/
@@ -32,8 +36,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
+          issuer-uri: http://localhost:8080
           secret-key: gsghXwbHBKHMvjUtBgGgQtJH4R1fPCDcgTKu5mkJA5w=
           expiration: 3600000
+      rsa:
+        private-key: classpath:certs/private-key.pem
+        public-key: classpath:certs/public-key.pem
 
 devsecopsapp:
 
@@ -50,6 +58,7 @@ devsecopsapp:
       - Content-Type
       - X-CSRF-TOKEN
     cookie-name: dsoappsession
+    cookie-max-age: 3600
 
   integration:
     api:

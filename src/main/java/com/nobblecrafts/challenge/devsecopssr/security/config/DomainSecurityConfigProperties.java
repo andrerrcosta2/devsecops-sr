@@ -13,4 +13,5 @@ public class DomainSecurityConfigProperties {
     Set<String> allowedOrigins;
     Set<String> allowedHeaders;
     String cookieName;
+    int cookieMaxAge;
 }

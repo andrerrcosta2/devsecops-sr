@@ -23,6 +23,7 @@ public class AuthCookieHandler {
     private void setCookieOnResponse(String token, HttpServletResponse response) {
         Cookie cookie = new Cookie(properties.getCookieName(), token);
         cookie.setPath("/");
+        cookie.setMaxAge(properties.getCookieMaxAge());
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }

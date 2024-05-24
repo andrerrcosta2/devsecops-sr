@@ -1,12 +1,8 @@
 package com.nobblecrafts.challenge.devsecopssr.domain;
 
-import com.nobblecrafts.challenge.devsecopssr.domain.core.exception.DomainException;
 import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.LoginRequest;
 import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.LoginResponse;
-import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.RegisterAccountRequest;
-import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.RegisterAccountResponse;
 import com.nobblecrafts.challenge.devsecopssr.security.exception.AuthenticationException;
-import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

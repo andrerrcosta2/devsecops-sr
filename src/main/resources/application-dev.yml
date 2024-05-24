@@ -58,6 +58,7 @@ devsecopsapp:
       - Content-Type
       - X-CSRF-TOKEN
     cookie-name: dsoappsession
+    cookie-max-age: 3600
 
   integration:
     api:
