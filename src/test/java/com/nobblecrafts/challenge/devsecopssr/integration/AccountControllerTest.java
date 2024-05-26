@@ -20,11 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AccountControllerTest extends AbstractControllerTest {
 
     @Test
-    void preTest() {
-        log.info("\n\nIsGood? {}\n\n", PatternMatcherUtils.isValidPassword("Good-Password-2024$"));
-    }
-
-    @Test
     void A00_should_Create_User_Successfully() throws Exception {
 
         var result = mvc.perform(post(AccountController.PATH + "/register")
