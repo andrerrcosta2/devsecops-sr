@@ -1,4 +1,4 @@
-package com.nobblecrafts.challenge.devsecopssr.app.rest;
+package com.nobblecrafts.challenge.devsecopssr.app.mvc;
 
 import com.nobblecrafts.challenge.devsecopssr.domain.AuthService;
 import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.LoginRequest;
@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class AuthController {
 
+    public static final String PATH = "/auth";
     private final AuthService authService;
 
     @PostMapping(path = "login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -31,6 +33,7 @@ public class AuthController {
 
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             return "login";
         }
 
@@ -40,6 +43,7 @@ public class AuthController {
             log.info("Error on login: {}", request);
             log.info("Exception: {}", e.getMessage());
             model.addAttribute("authError", true);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "login";
         }
         return "redirect:/home";

@@ -1,4 +1,4 @@
-package com.nobblecrafts.challenge.devsecopssr.util;
+package com.nobblecrafts.challenge.devsecopssr.util.generator;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;

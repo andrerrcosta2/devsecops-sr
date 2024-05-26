@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "user/activity", produces = "application/vnd.api.v1+json")
 public class UserActivityRestController {
+
+    public static final String PATH = "/user/activity";
     private final UserActivityService userActivityService;
 
     @PostMapping("favorite/{movieId}")

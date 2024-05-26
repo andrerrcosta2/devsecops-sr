@@ -1,6 +1,7 @@
 package com.nobblecrafts.challenge.devsecopssr.security.filter;
 
 import com.nobblecrafts.challenge.devsecopssr.security.config.DomainSecurityConfigProperties;
+import com.nobblecrafts.challenge.devsecopssr.security.web.filter.WhitelistedOncePerRequestFilter;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
@@ -11,19 +12,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Set;
 
 @Slf4j
-@RequiredArgsConstructor
-//@WebFilter("/*")
-public class JwtCookieFilter extends OncePerRequestFilter {
+public class JwtCookieFilter extends WhitelistedOncePerRequestFilter {
 
     private final DomainSecurityConfigProperties properties;
+
+    public JwtCookieFilter(Set<AntPathRequestMatcher> whiteList,
+                                            DomainSecurityConfigProperties properties) {
+        super(whiteList);
+        this.properties = properties;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -57,6 +64,33 @@ public class JwtCookieFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    public static class JwtCookieFilterBuilder extends WhiteListedOncePerRequestFilterBuilder<JwtCookieFilter, JwtCookieFilterBuilder> {
+
+        private DomainSecurityConfigProperties properties;
+
+        protected JwtCookieFilterBuilder() {
+            super(new JwtCookieFilter(Collections.emptySet(), null)); // Initialize with an empty whiteList
+        }
+
+        public JwtCookieFilterBuilder securityConfigProperties(DomainSecurityConfigProperties properties) {
+            this.properties = properties;
+            return self();
+        }
+
+        @Override
+        protected JwtCookieFilterBuilder self() {
+            return this;
+        }
+
+        public JwtCookieFilter build() {
+            return new JwtCookieFilter(whiteList, properties);
+        }
+    }
+
+    public static JwtCookieFilterBuilder builder() {
+        return new JwtCookieFilterBuilder();
     }
 
 }

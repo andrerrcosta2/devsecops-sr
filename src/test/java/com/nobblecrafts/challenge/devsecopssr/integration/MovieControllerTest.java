@@ -1,5 +1,6 @@
 package com.nobblecrafts.challenge.devsecopssr.integration;
 
+import com.nobblecrafts.challenge.devsecopssr.app.rest.MovieRestController;
 import com.nobblecrafts.challenge.devsecopssr.config.AbstractControllerTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -15,12 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "testuser001",
         password = "Brasil2025$")
 class MovieControllerTest extends AbstractControllerTest {
-    private final String ENDPOINT = "/movies";
 
     @Test
     @DisplayName("Listar filmes")
     void A00_list_movies() throws Exception {
-        MvcResult result = mvc.perform(get(ENDPOINT + "/1").content("application/json"))
+        MvcResult result = mvc.perform(get(MovieRestController.PATH + "/1")
+                        .content("application/json"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();

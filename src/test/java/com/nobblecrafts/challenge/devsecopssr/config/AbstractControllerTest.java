@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.nobblecrafts.challenge.devsecopssr.util.context.DatabaseContext;
 import com.nobblecrafts.challenge.devsecopssr.util.ser.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
@@ -28,6 +29,8 @@ public class AbstractControllerTest {
 
     @Autowired
     protected MockMvc mvc;
+    @Autowired
+    protected DatabaseContext context;
 
     protected <DTO> DTO convertJsonToEntity(String json, Class<DTO> clazz) {
         Gson gson = new Gson();

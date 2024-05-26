@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,16 +25,32 @@ import java.util.Enumeration;
 public class SecurityFilterConfig {
 
     private final DomainSecurityConfigProperties properties;
-
     @Bean
-    public JwtCookieFilter jwtCookieFilter() {
-        return new JwtCookieFilter(properties);
+    public JwtCookieFilter jwtCookieFilter(DomainSecurityConfigProperties properties) {
+        return JwtCookieFilter.builder()
+                .securityConfigProperties(properties)
+                .addToWhiteList(HttpMethod.POST, "/auth/login")
+                .addToWhiteList(HttpMethod.GET, "/register")
+                .addToWhiteList(HttpMethod.GET, "/auth/login")
+                .addToWhiteList(HttpMethod.POST, "/account/register")
+                .addToWhiteList(HttpMethod.OPTIONS, "/**")
+                .addToWhiteList(HttpMethod.GET, "/")
+                .build();
     }
 
     @Bean
     public SessionExceptionCookieFilter sessionExceptionCookieFilter(UserDetailsService userDetailsService,
                                                                      DomainSecurityContext context) {
-        return new SessionExceptionCookieFilter(userDetailsService, context);
+        return SessionExceptionCookieFilter.builder()
+                .securityContext(context)
+                .userDetailsService(userDetailsService)
+                .addToWhiteList(HttpMethod.POST, "/auth/login")
+                .addToWhiteList(HttpMethod.GET, "/register")
+                .addToWhiteList(HttpMethod.GET, "/auth/login")
+                .addToWhiteList(HttpMethod.POST, "/account/register")
+                .addToWhiteList(HttpMethod.OPTIONS, "/**")
+                .addToWhiteList(HttpMethod.GET, "/")
+                .build();
     }
 
     @Bean

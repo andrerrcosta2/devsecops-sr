@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,5 +38,11 @@ public class DomainExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void handleAccessDeniedException(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex) throws IOException {
         response.sendRedirect(request.getContextPath() + "/");
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public void handleUsernameNotFoutException(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex) throws IOException {
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 }

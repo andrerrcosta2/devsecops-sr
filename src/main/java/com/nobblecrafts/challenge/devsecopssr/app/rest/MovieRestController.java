@@ -22,6 +22,7 @@ import java.util.Optional;
 @RequestMapping(path = "movies", produces = "application/vnd.api.v1+json")
 public class MovieRestController {
 
+    public static final String PATH = "/movies";
     private final MovieService movieService;
 
     @GetMapping("{page}")

@@ -1,6 +1,7 @@
 package com.nobblecrafts.challenge.devsecopssr.integration;
 
 import com.nobblecrafts.challenge.devsecopssr.app.rest.MovieRestController;
+import com.nobblecrafts.challenge.devsecopssr.app.rest.UserActivityRestController;
 import com.nobblecrafts.challenge.devsecopssr.config.AbstractControllerTest;
 import com.nobblecrafts.challenge.devsecopssr.domain.CreateUserActivityHelper;
 import com.nobblecrafts.challenge.devsecopssr.domain.RegisterAccountHelper;
@@ -27,8 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         password = "Brasil2025$")
 public class CsrfControllerTest extends AbstractControllerTest {
 
-    private final String ENDPOINT = "/user/activity";
-
     @Autowired
     private MovieRestController movieRestController;
 
@@ -54,7 +53,7 @@ public class CsrfControllerTest extends AbstractControllerTest {
                 .getMovieDetailsEvaluated((long) movie.get().id()).getBody();
 
 
-        var result = mvc.perform(post(ENDPOINT + "/favorite")
+        var result = mvc.perform(post(UserActivityRestController.PATH + "/favorite")
                         .contentType("application/json")
                         .content(convertEntityToJson(movieDetails))
                         .with(request -> {
@@ -81,7 +80,7 @@ public class CsrfControllerTest extends AbstractControllerTest {
                 .getMovieDetailsEvaluated((long) movie.get().id()).getBody();
 
 
-        var result = mvc.perform(post(ENDPOINT + "/want-to-watch")
+        var result = mvc.perform(post(UserActivityRestController.PATH + "/want-to-watch")
                         .with(csrf())
                         .contentType("application/json")
                         .content(convertEntityToJson(movieDetails)))
