@@ -33,6 +33,11 @@ spring:
         connection:
           provider_disables_autocommit: true
 
+  test:
+    listener:
+      oauth2user:
+        cookie-name: dsoappsession
+
   security:
     oauth2:
       resourceserver:

@@ -44,4 +44,13 @@ public class AccountEntity {
         result = prime * result + ((id == null) ? System.identityHashCode(this) : id.hashCode());
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "AccountEntity{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -5,29 +5,34 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.nobblecrafts.challenge.devsecopssr.config.test.interceptor.OAuth2UserTestExecutionListener;
+import com.nobblecrafts.challenge.devsecopssr.config.test.web.client.InterceptableTestRestTemplate;
 import com.nobblecrafts.challenge.devsecopssr.config.test.context.DatabaseContext;
 import com.nobblecrafts.challenge.devsecopssr.util.ser.JsonUtils;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class})
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class AbstractControllerTest {
+@TestExecutionListeners(listeners = {
+        OAuth2UserTestExecutionListener.class,
+        DependencyInjectionTestExecutionListener.class
+},  mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+public abstract class AbstractHttpTest {
 
     @Autowired
-    protected MockMvc mvc;
+    protected InterceptableTestRestTemplate rest;
     @Autowired
     protected DatabaseContext context;
 
@@ -39,8 +44,7 @@ public class AbstractControllerTest {
 
     protected <DTO> List<DTO> convertJsonToEntityList(String json, Class<DTO> clazz) {
         Gson gson = new Gson();
-        List<DTO> entities = gson.fromJson(json, new TypeToken<List<DTO>>() {
-        }.getType());
+        List<DTO> entities = gson.fromJson(json, new TypeToken<List<DTO>>() {}.getType());
         return entities;
     }
 

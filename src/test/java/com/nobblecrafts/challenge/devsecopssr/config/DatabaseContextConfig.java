@@ -1,10 +1,8 @@
 package com.nobblecrafts.challenge.devsecopssr.config;
 
-import com.nobblecrafts.challenge.devsecopssr.util.context.DatabaseContext;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -12,32 +10,23 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@Profile({"test"})
+//@Profile({"test"})
 //@TestConfiguration
 @Configuration
-//@Lazy
-@ComponentScan("com.nobblecrafts.challenge.devsecopssr")
+@Lazy
+//@ComponentScan("com.nobblecrafts.challenge.devsecopssr")
 public class DatabaseContextConfig {
 
     @Value("${spring.datasource.url}")
     private String datasourceUrl;
-
     @Value("${spring.datasource.username}")
     private String datasourceUsername;
-
     @Value("${spring.datasource.password}")
     private String datasourcePassword;
-
     @Value("${spring.datasource.driver-class-name}")
     private String datasourceDriverClassName;
-
     @Value("${spring.jpa.packages-to-scan}")
     private String packagesToScan;
-
-    @Bean
-    public DatabaseContext databaseContext() {
-        return new DatabaseContext();
-    }
 
     @Bean
     public DataSource dataSource() {

@@ -1,4 +1,4 @@
-package com.nobblecrafts.challenge.devsecopssr.util.context;
+package com.nobblecrafts.challenge.devsecopssr.config.test.context;
 
 import lombok.experimental.SuperBuilder;
 

@@ -1,9 +1,7 @@
-package com.nobblecrafts.challenge.devsecopssr.integration;
+package com.nobblecrafts.challenge.devsecopssr.e2e.controller;
 
 import com.nobblecrafts.challenge.devsecopssr.app.mvc.AccountController;
 import com.nobblecrafts.challenge.devsecopssr.config.AbstractControllerTest;
-import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.RegisterAccountRequest;
-import com.nobblecrafts.challenge.devsecopssr.util.PatternMatcherUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -60,5 +58,4 @@ class AccountControllerTest extends AbstractControllerTest {
                 .andReturn();
 
     }
-
 }

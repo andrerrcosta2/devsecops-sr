@@ -18,6 +18,13 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Esse filtro não é realmente necessário para uma aplicação onde o gerenciamento
+ * de sessão é stateless. Nesse caso ele faz requisições repetidas para o banco de
+ * dados, algo que em uma sessão persistida é feito geralmente em cache.
+ * Mas é um filtro que eu costumo criar para lidar com exceções de segurança customizadas
+ * para aplicações com necessidades diferentes.
+ */
 @Slf4j
 public class SessionExceptionCookieFilter extends WhitelistedOncePerRequestFilter {
 

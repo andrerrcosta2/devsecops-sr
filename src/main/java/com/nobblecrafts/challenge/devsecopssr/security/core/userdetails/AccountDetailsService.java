@@ -16,7 +16,7 @@ public class AccountDetailsService implements UserDetailsService {
     private final AccountJpaRepository repository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("\n\nAccountDetailsService: {}\n\n", username);
+        log.debug("\n\nAccountDetailsService: {}\n\n", username);
         return repository
                 .findByUsername(username)
                 .map(AccountDetails::new)

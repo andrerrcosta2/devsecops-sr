@@ -1,12 +1,9 @@
-package com.nobblecrafts.challenge.devsecopssr.integration;
+package com.nobblecrafts.challenge.devsecopssr.e2e.controller;
 
 import com.nobblecrafts.challenge.devsecopssr.app.mvc.AuthController;
 import com.nobblecrafts.challenge.devsecopssr.app.mvc.MovieController;
-import com.nobblecrafts.challenge.devsecopssr.app.rest.MovieRestController;
 import com.nobblecrafts.challenge.devsecopssr.config.AbstractControllerTest;
-import com.nobblecrafts.challenge.devsecopssr.domain.core.entity.MovieStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Profile("test")
 @Slf4j
-public class AuthorizationSecurityTest extends AbstractControllerTest {
+class AuthorizationSecurityTest extends AbstractControllerTest {
 
     @Autowired
     private PasswordEncoder encoder;

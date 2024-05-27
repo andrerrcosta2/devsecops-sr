@@ -1,4 +1,4 @@
-package com.nobblecrafts.challenge.devsecopssr.integration;
+package com.nobblecrafts.challenge.devsecopssr.e2e.controller;
 
 import com.nobblecrafts.challenge.devsecopssr.app.rest.MovieRestController;
 import com.nobblecrafts.challenge.devsecopssr.config.AbstractControllerTest;

@@ -65,4 +65,6 @@ public class MovieEvaluationEntity {
                 ", user=" + user.getId() +
                 '}';
     }
+
+
 }

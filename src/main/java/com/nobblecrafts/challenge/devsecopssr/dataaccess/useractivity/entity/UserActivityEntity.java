@@ -69,4 +69,13 @@ public class UserActivityEntity {
         result = prime * result + ((id == null) ? System.identityHashCode(this) : id.hashCode());
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "UserActivityEntity{" +
+                "id=" + id +
+                ", account=" + account +
+                ", movieEvaluations=" + movieEvaluations +
+                '}';
+    }
 }

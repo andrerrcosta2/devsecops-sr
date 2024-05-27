@@ -4,8 +4,6 @@ import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
 import com.nobblecrafts.challenge.devsecopssr.security.config.DomainSecurityConfigProperties;
 import com.nobblecrafts.challenge.devsecopssr.security.config.OAuth2ConfigProperties;
 import com.nobblecrafts.challenge.devsecopssr.security.core.userdetails.AccountDetailsService;
@@ -39,7 +37,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -55,9 +52,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf((csrf) -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository())
                         .requireCsrfProtectionMatcher(new CSRFRequestMatcher()))
+//                .csrf((csrf) -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class)
@@ -66,11 +65,8 @@ public class SecurityConfig {
                 .userDetailsService(accountDetailsService)
                 .authorizeHttpRequests(this::httpRequestConfig);
 
-
         return http.build();
     }
-
-
 
     @Bean
     public JwtDecoder jwtDecoder() {
@@ -88,6 +84,7 @@ public class SecurityConfig {
 
     public void httpRequestConfig(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry r) {
         r.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/csrf").permitAll()
                 .requestMatchers(HttpMethod.GET, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/account/register").permitAll()

@@ -1,5 +1,6 @@
 package com.nobblecrafts.challenge.devsecopssr.domain;
 
+import com.nobblecrafts.challenge.devsecopssr.dataaccess.useractivity.repository.UserActivityJpaRepository;
 import com.nobblecrafts.challenge.devsecopssr.domain.core.entity.MovieEvaluation;
 import com.nobblecrafts.challenge.devsecopssr.domain.core.entity.UserActivity;
 import com.nobblecrafts.challenge.devsecopssr.domain.core.exception.DomainNotFoundException;
@@ -40,7 +41,7 @@ public class EvaluateMovieHelper {
     private UserActivity getUser(MovieEvaluationCommand command) {
         Optional<UserActivity> optional = userActivityRepository.findByUsername(command.currentUser());
         if(optional.isEmpty()) {
-            log.error("Security error, etc");
+            log.error("Security error, evaluating movie without account on database");
             throw new AccessDeniedException("Unauthorized Access");
         }
         return optional.get();
