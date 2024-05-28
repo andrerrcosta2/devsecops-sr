@@ -14,7 +14,7 @@ public class TestCsrfToken implements CsrfToken {
 
     @Override
     public String getHeaderName() {
-        return "X-CSRF-TOKEN";
+        return "x-csrf-token";
     }
 
     @Override

@@ -30,14 +30,15 @@ class AuthorizationSecurityTest extends AbstractControllerTest {
     @Test
     @WithAnonymousUser
     void A00_should_Not_Authenticate_Wrong_Password() throws Exception {
-        context.suppose(anAccount("test-user-joe", encoder.encode("Test-Password-2024")))
+        context.clear()
+                .suppose(anAccount("TestUserJoe", encoder.encode("TestPassword2024$")))
                 .existsOnDatabase();
 
         MvcResult result = mvc.perform(post(AuthController.PATH + "/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                        .param("username", "test-user-joe")
-                        .param("password", "wrong-password"))
+                        .param("username", "TestUserJoe")
+                        .param("password", "wrongPassword1$"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andReturn();
@@ -46,15 +47,15 @@ class AuthorizationSecurityTest extends AbstractControllerTest {
     @Test
     @WithAnonymousUser
     void A01_should_Authenticate_Correct_Password() throws Exception {
-        context.suppose(anAccount("test-user-joe2", encoder
-                        .encode("Test-Password-2024")))
+        context.clear().suppose(anAccount("TestUserJoey", encoder
+                        .encode("TestPassword2024$")))
                 .existsOnDatabase();
 
         MvcResult result = mvc.perform(post(AuthController.PATH + "/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                        .param("username", "test-user-joe2")
-                        .param("password", "Test-Password-2024"))
+                        .param("username", "TestUserJoey")
+                        .param("password", "TestPassword2024$"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andReturn();

@@ -30,6 +30,11 @@ public class DatabaseContext {
                 .collect(Collectors.toList());
     }
 
+    public DatabaseContext clear() {
+        configurations.clear();
+        return this;
+    }
+
 
     public Applier suppose(Object context) {
         configurations.add(context);

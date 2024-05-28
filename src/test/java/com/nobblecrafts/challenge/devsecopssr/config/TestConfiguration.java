@@ -1,20 +1,21 @@
 package com.nobblecrafts.challenge.devsecopssr.config;
 
 import com.nobblecrafts.challenge.devsecopssr.config.test.context.ContextTransactionManager;
+import com.nobblecrafts.challenge.devsecopssr.config.test.context.DatabaseContext;
+import com.nobblecrafts.challenge.devsecopssr.config.test.core.io.PayloadArgumentsProvider;
 import com.nobblecrafts.challenge.devsecopssr.config.test.interceptor.OAuth2UserTestExecutionListener;
 import com.nobblecrafts.challenge.devsecopssr.config.test.web.client.InterceptableTestRestTemplate;
-import com.nobblecrafts.challenge.devsecopssr.config.test.context.DatabaseContext;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
+import org.springframework.core.io.ResourceLoader;
 
 @Profile("test")
 @Configuration
 @Lazy
+@Import({SecurityConfig.class, SecurityFilterConfig.class})
 public class TestConfiguration {
 
     @LocalServerPort
@@ -38,5 +39,11 @@ public class TestConfiguration {
     @Bean
     public DatabaseContext databaseContext(ContextTransactionManager ctm) {
         return new DatabaseContext(ctm);
+    }
+
+    @Bean
+    public PayloadArgumentsProvider payloadArgumentsProvider(ResourceLoader resourceLoader,
+                                                             @Value("${devsecops.test.security.payload:payloads/}") String payloads) {
+        return new PayloadArgumentsProvider(resourceLoader, payloads);
     }
 }

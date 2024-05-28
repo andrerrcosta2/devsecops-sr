@@ -74,3 +74,4 @@ devsecopsapp:
       tmdb-auth-path:  /3/authentication
       tmdb-movie-details-path: /3/movie
       tmdb-movie-discover-path: /3/discover/movie
+

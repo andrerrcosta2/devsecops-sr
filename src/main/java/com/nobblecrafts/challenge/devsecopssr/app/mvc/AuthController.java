@@ -2,7 +2,6 @@ package com.nobblecrafts.challenge.devsecopssr.app.mvc;
 
 import com.nobblecrafts.challenge.devsecopssr.domain.AuthService;
 import com.nobblecrafts.challenge.devsecopssr.domain.service.dto.LoginRequest;
-import com.nobblecrafts.challenge.devsecopssr.security.exception.AuthenticationException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,6 @@ public class AuthController {
                         BindingResult result,
                         Model model,
                         HttpServletResponse response) {
-
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
             response.setStatus(HttpStatus.BAD_REQUEST.value());

@@ -19,7 +19,7 @@ public class ContextTransactionManager {
     public void openTransaction() {
         if(em == null || !em.isOpen()) createEntityManager();
         log.debug("\n\nOpening transaction\n\n");
-        em.getTransaction().begin();
+        if(!em.getTransaction().isActive()) em.getTransaction().begin();
     }
 
     public void closeTransaction() {

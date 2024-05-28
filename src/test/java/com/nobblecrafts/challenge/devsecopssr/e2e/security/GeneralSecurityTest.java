@@ -20,9 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 class GeneralSecurityTest extends AbstractHttpTest {
 
-    @Autowired
-    private MovieRestController movieRestController;
-
     @Test
     @WithOAuth2User(username = "user-test", password = "password-test")
     void A00_shouldnt_Allow_Post_Put_Delete_Without_CSRF() {
@@ -48,6 +45,7 @@ class GeneralSecurityTest extends AbstractHttpTest {
         headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
         headers.add(csrfToken.getParameterName(), csrfToken.getToken());
         headers.add("X-XSRF-TOKEN", csrfToken.getToken());
+        headers.add("_csrf", csrfToken.getToken());
 
         // Create HttpEntity with headers
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);

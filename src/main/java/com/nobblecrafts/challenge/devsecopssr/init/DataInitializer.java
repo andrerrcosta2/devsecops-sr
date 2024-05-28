@@ -21,7 +21,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-//        createDefaultAccount();
+        createDefaultAccount();
     }
 
     private void createDefaultAccount() {

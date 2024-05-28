@@ -23,8 +23,8 @@ class AccountControllerTest extends AbstractControllerTest {
         var result = mvc.perform(post(AccountController.PATH + "/register")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("username", "test-user-joe")
-                        .param("password", "Good-Pa$$word-2024"))
+                        .param("username", "TestUserJoe")
+                        .param("password", "GoodPa$$word2024"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andReturn();
@@ -36,8 +36,8 @@ class AccountControllerTest extends AbstractControllerTest {
         var result = mvc.perform(post(AccountController.PATH + "/register")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("username", "test-user-joe")
-                        .param("password", "bad-password-2024"))
+                        .param("username", "TestUserJoe")
+                        .param("password", "badpassword2024"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn();
@@ -45,14 +45,14 @@ class AccountControllerTest extends AbstractControllerTest {
 
     @Test
     void A02_should_Not_Allow_Create_Account_With_Existing_Username() throws Exception {
-        context.suppose(anAccount("test-user-joe2", "Test-Password-2024"))
+        context.suppose(anAccount("TestUserJoey", "TestPassword2024$"))
                 .existsOnDatabase();
 
         mvc.perform(post(AccountController.PATH + "/register")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("username", "test-user-joe2")
-                        .param("password", "Good-Pa$$word-2024"))
+                        .param("username", "TestUserJoey")
+                        .param("password", "TestPassword2024$"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andReturn();

@@ -35,9 +35,13 @@ public class OAuth2UserTestExecutionListener extends AbstractTestExecutionListen
             String username = annotation.username();
             String password = annotation.password();
 
-            context.suppose(anAccount(username, encoder.encode(password)))
-                    .thenSuppose(context -> anUserActivity(context.retrieve(AccountEntity.class).get(0)))
-                    .existsOnDatabase();
+            try {
+                context.clear().suppose(anAccount(username, encoder.encode(password)))
+                        .thenSuppose(context -> anUserActivity(context.retrieve(AccountEntity.class).get(0)))
+                        .existsOnDatabase();
+            } catch (Exception e) {
+                log.error("Error Persisting User: {}", e.getMessage());
+            }
 
             String token = jwtTokenProvider.generateToken(authenticationHelper
                     .authenticate(new LoginRequest(username, password)));

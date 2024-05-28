@@ -24,5 +24,4 @@ public abstract class DatabaseContextConfiguration<T> {
         Set<T> set = configurations.stream().collect(Collectors.toSet());
         return Collections.unmodifiableSet(set);
     }
-
 }

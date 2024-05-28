@@ -7,6 +7,8 @@ import lombok.Getter;
 import java.util.Date;
 import java.util.List;
 
+// Essas classes também deveriam possuir constraints personalizadas
+// de acodo com a resposta, pois são inputs
 @Builder
 public record TMDBMovieDetails(
         @JsonProperty("id")

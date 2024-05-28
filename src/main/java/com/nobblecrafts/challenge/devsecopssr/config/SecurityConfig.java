@@ -9,6 +9,7 @@ import com.nobblecrafts.challenge.devsecopssr.security.config.OAuth2ConfigProper
 import com.nobblecrafts.challenge.devsecopssr.security.core.userdetails.AccountDetailsService;
 import com.nobblecrafts.challenge.devsecopssr.security.filter.JwtCookieFilter;
 import com.nobblecrafts.challenge.devsecopssr.security.filter.SessionExceptionCookieFilter;
+import com.nobblecrafts.challenge.devsecopssr.security.web.DomainAuthenticationEntryPoint;
 import com.nobblecrafts.challenge.devsecopssr.security.web.util.matcher.CSRFRequestMatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -56,14 +57,15 @@ public class SecurityConfig {
         http
                 .csrf((csrf) -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository())
                         .requireCsrfProtectionMatcher(new CSRFRequestMatcher()))
-//                .csrf((csrf) -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(sessionExceptionCookieFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
                 .userDetailsService(accountDetailsService)
-                .authorizeHttpRequests(this::httpRequestConfig);
+                .authorizeHttpRequests(this::httpRequestConfig)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new DomainAuthenticationEntryPoint()));
 
         return http.build();
     }
