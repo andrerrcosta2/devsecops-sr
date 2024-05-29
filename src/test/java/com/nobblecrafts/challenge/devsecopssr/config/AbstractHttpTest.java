@@ -14,6 +14,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -31,6 +32,7 @@ import java.util.List;
         OAuth2UserTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class
 },  mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+@Import({CustomTestConfiguration.class, DatabaseContextConfig.class})
 public abstract class AbstractHttpTest {
 
     @Autowired

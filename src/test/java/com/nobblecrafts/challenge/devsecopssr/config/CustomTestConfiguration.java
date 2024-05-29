@@ -7,16 +7,19 @@ import com.nobblecrafts.challenge.devsecopssr.config.test.interceptor.OAuth2User
 import com.nobblecrafts.challenge.devsecopssr.config.test.web.client.InterceptableTestRestTemplate;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
 
-@Profile("test")
-@Configuration
+//@Profile("test")
+@TestConfiguration
 @Lazy
 @Import({SecurityConfig.class, SecurityFilterConfig.class})
-public class TestConfiguration {
+public class CustomTestConfiguration {
 
     @LocalServerPort
     private int port;

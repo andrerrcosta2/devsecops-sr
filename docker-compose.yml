@@ -5,6 +5,16 @@ networks:
     name: devsecops-network
 
 services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"  # Jenkins web interface
+      - "50000:50000"  # Jenkins slave agent
+    volumes:
+      - jenkins_home:/var/jenkins_home  # Persistent storage for Jenkins data
+    networks:
+      - devsecops-network
+
   db:
     container_name: db
     image: 'postgres:12-alpine'
@@ -53,6 +63,11 @@ services:
       - db
     networks:
       - devsecops-network
+
+
+volumes:
+  jenkins_home:
+
 #    volumes:
 #      - ./target:/usr/app
 
