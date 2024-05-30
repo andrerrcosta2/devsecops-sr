@@ -24,9 +24,9 @@ public class MovieController {
     @GetMapping
     public String getMoviesList(Model model) {
         Page<TMDBMovie> movies = movieService.listMovies(1);
-        movies.forEach(movie -> {
-            log.info("Movie {}: {}", movie.id(), movie);
-        });
+//        movies.forEach(movie -> {
+//            log.info("Movie {}: {}", movie.id(), movie);
+//        });
         model.addAttribute("movies", movies);
         return "movies";
     }

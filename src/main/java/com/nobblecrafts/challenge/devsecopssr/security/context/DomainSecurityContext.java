@@ -51,7 +51,7 @@ public class DomainSecurityContext {
             invalidateSession();
             throw new AccessDeniedException("Unauthorized");
         }
-        log.info("\n\nrequireCurrentSecurityAccountDTO: {}, {}\n\n", username, account);
+        log.debug("\n\nrequireCurrentSecurityAccountDTO: {}, {}\n\n", username, account);
         return account.map(mapper::securityAccountDTO).get();
     }
 
@@ -106,7 +106,7 @@ public class DomainSecurityContext {
     }
 
     public void invalidateSession() {
-        log.info("\n\ninvalidate session\n\n");
+        log.debug("\n\ninvalidate session\n\n");
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes instanceof ServletRequestAttributes) {
             HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
@@ -129,7 +129,7 @@ public class DomainSecurityContext {
     }
 
     public void invalidateCookie(HttpServletResponse response) {
-        log.info("\n\ninvalidate cookie\n\n");
+        log.debug("\n\ninvalidate cookie\n\n");
         Cookie cookie = new Cookie(properties.getCookieName(), null);
         cookie.setPath("/");
         cookie.setHttpOnly(true);

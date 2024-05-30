@@ -20,7 +20,7 @@ class AccountControllerTest extends AbstractControllerTest {
     @Test
     void A00_should_Create_User_Successfully() throws Exception {
 
-        var result = mvc.perform(post(AccountController.PATH + "/register")
+        var result = mvc.perform(post(uri(AccountController.PATH, "register"))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("username", "TestUserJoe")
@@ -33,7 +33,7 @@ class AccountControllerTest extends AbstractControllerTest {
     @Test
     void A01_should_Throw_A_Bad_Request_For_Bad_Password() throws Exception {
 
-        var result = mvc.perform(post(AccountController.PATH + "/register")
+        var result = mvc.perform(post(uri(AccountController.PATH, "register"))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("username", "TestUserJoe")
@@ -48,7 +48,7 @@ class AccountControllerTest extends AbstractControllerTest {
         context.suppose(anAccount("TestUserJoey", "TestPassword2024$"))
                 .existsOnDatabase();
 
-        mvc.perform(post(AccountController.PATH + "/register")
+        mvc.perform(post(uri(AccountController.PATH, "register"))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("username", "TestUserJoey")

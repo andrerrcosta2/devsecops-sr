@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,26 +28,26 @@ public class DomainSecurityExceptionFilterImpl implements DomainSecurityExceptio
 
     private void validateSession() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Optional<UserDetails> currentUser = loadUserByUsername(authentication.getName());
-            if (currentUser.isEmpty()) {
-                securityContext.invalidateSession();
-                return;
-            }
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken || !authentication.isAuthenticated()) {
+            log.info("Skipping session validation for anonymous user");
+            return;
+        }
+
+        Optional<UserDetails> currentUser = loadUserByUsername(authentication.getName());
+        if (currentUser.isEmpty()) {
+            securityContext.invalidateSession();
         }
     }
 
     private Optional<UserDetails> loadUserByUsername(String username) {
-        UserDetails output = null;
         try {
-            output = userDetailsService.loadUserByUsername(username);
+            return Optional.of(userDetailsService.loadUserByUsername(username));
         } catch (UsernameNotFoundException e) {
-            log.info("Username not found", e.getMessage());
+            log.info("Username not found: {}", e.getMessage());
             return Optional.empty();
         } catch (Exception e) {
             log.error("Exception error: {}", e);
             return Optional.empty();
         }
-        return Optional.ofNullable(output);
     }
 }
