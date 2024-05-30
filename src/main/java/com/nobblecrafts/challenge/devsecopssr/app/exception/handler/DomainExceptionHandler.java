@@ -35,24 +35,32 @@ public class DomainExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public void handleAuthenticationException(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException {
+        log.info("\n\nhandleAuthenticationException\n\n");
+        ex.printStackTrace();
         response.sendRedirect(request.getContextPath() + "/");
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void handleAccessDeniedException(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex) throws IOException {
+        log.info("\n\nhandleAccessDeniedException\n\n");
+        ex.printStackTrace();
         response.sendRedirect(request.getContextPath() + "/");
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void handleUsernameNotFoutException(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex) throws IOException {
+        log.info("\n\nhandleUsernameNotFoutException\n\n");
+        ex.printStackTrace();
         response.sendRedirect(request.getContextPath() + "/login");
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        log.info("\n\nhandleTypeMismatch\n\n");
+        ex.printStackTrace();
         String errorMessage = "Invalid parameter: " + ex.getName() + ". Expected type: " + ex.getRequiredType().getSimpleName();
         return ResponseEntity.badRequest().body(errorMessage);
     }
@@ -60,6 +68,8 @@ public class DomainExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        log.info("\n\nhandleHttpMessageNotReadable\n\n");
+        ex.printStackTrace();
         String errorMessage = "Malformed JSON request";
         return ResponseEntity.badRequest().body(errorMessage);
     }
@@ -67,6 +77,8 @@ public class DomainExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
+        log.info("\n\nhandleMissingServletRequestParameter\n\n");
+        ex.printStackTrace();
         String errorMessage = "Missing parameter: " + ex.getParameterName();
         return ResponseEntity.badRequest().body(errorMessage);
     }

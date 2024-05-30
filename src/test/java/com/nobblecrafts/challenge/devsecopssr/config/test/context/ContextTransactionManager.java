@@ -27,6 +27,7 @@ public class ContextTransactionManager {
     }
 
     public void persistTransaction(List<Object> entities) {
+        log.debug("\n\nPersist Transaction: {}\n\n", entities);
         try {
             persistConfigurations(entities);
             em.flush();
@@ -47,5 +48,6 @@ public class ContextTransactionManager {
         for (Object entity : entities) {
             em.persist(entity);
         }
+        log.debug("\n\nPersisted Configurations: {}\n\n", entities);
     }
 }

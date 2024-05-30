@@ -31,14 +31,18 @@ public class EvaluateMovieHelper {
 
     @Transactional
     public MovieDetailsWithEvaluation updateMovieEvaluation(MovieEvaluationCommand command) {
-        UserActivity activity = getUser(command);
+        UserActivity activity = getUserActivity(command);
         MovieEvaluation evaluation = movieEvaluationDataMapper.toMovieEvaluation(command, activity);
         TMDBMovieDetails movieDetails = getMovieDetails(command);
         MovieEvaluation evaluated = persistEvaluation(evaluation);
         return movieEvaluationDataMapper.toMovieDetailsWithEvaluation(movieDetails, evaluated.getStatus());
     }
 
-    private UserActivity getUser(MovieEvaluationCommand command) {
+    // Nesse método existem 2 possibilidades.
+    // 1 é invalidar a sessão ao não haver uma entidade de atividade
+    // 2 é criar por confiança no usuário.
+    // Eu escolhi invalidar a requisição
+    private UserActivity getUserActivity(MovieEvaluationCommand command) {
         Optional<UserActivity> optional = userActivityRepository.findByUsername(command.currentUser());
         if(optional.isEmpty()) {
             log.error("Security error, evaluating movie without account on database");

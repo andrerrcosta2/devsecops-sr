@@ -24,8 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Profile("test")
 @Slf4j
-@Import({SecurityConfig.class, SecurityFilterConfig.class})
-//@WithAnonymousUser
+@WithAnonymousUser
 class AuthorizationSecurityTest extends AbstractControllerTest {
 
     @Autowired
@@ -64,12 +63,11 @@ class AuthorizationSecurityTest extends AbstractControllerTest {
     }
 
     @Test
-//    @WithMockUser(username = "TestUserJoe", password = "GoodPassword2024$")
     void A02_should_Not_Authorize_Secured_Requests_Anonymously() throws Exception {
-        var result = mvc.perform(get(MovieController.PATH)
+        mvc.perform(get(uri(MovieController.PATH))
                         .contentType("application/json"))
                 .andDo(print())
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().is3xxRedirection())
                 .andReturn();
     }
 }

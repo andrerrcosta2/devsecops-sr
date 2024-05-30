@@ -20,8 +20,14 @@ import java.util.Set;
  * Esse filtro não é realmente necessário para uma aplicação onde o gerenciamento
  * de sessão é stateless. Nesse caso ele faz requisições repetidas para o banco de
  * dados, algo que em uma sessão persistida é feito geralmente em cache.
+ *
+ * Em casos como esse essa comunicação com o banco de dados reduz a escalabilidade
+ * da aplicação.
+ *
  * Mas é um filtro que eu costumo criar para lidar com exceções de segurança customizadas
  * para aplicações com necessidades diferentes.
+ *
+ * O interessante é trabalhar nesses casos com interfaces por diversos motivos.
  */
 @Slf4j
 @RequiredArgsConstructor

@@ -58,7 +58,6 @@ public class SecurityConfig {
         http
                 .csrf((csrf) -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository())
                         .requireCsrfProtectionMatcher(new CSRFRequestMatcher()))
-                .httpBasic(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtCookieFilter, UsernamePasswordAuthenticationFilter.class)

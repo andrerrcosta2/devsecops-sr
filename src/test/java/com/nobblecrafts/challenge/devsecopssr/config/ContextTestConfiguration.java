@@ -3,6 +3,7 @@ package com.nobblecrafts.challenge.devsecopssr.config;
 import com.nobblecrafts.challenge.devsecopssr.config.test.context.ContextTransactionManager;
 import com.nobblecrafts.challenge.devsecopssr.config.test.context.DatabaseContext;
 import com.nobblecrafts.challenge.devsecopssr.config.test.core.io.PayloadArgumentsProvider;
+import com.nobblecrafts.challenge.devsecopssr.config.test.filter.RequestContextForMvcRequestsFilter;
 import com.nobblecrafts.challenge.devsecopssr.config.test.interceptor.OAuth2UserTestExecutionListener;
 import com.nobblecrafts.challenge.devsecopssr.config.test.web.client.InterceptableTestRestTemplate;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,15 +12,15 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-//@Profile("test")
 @TestConfiguration
 @Lazy
-@Import({SecurityConfig.class, SecurityFilterConfig.class})
-public class CustomTestConfiguration {
+public class ContextTestConfiguration {
 
     @LocalServerPort
     private int port;

@@ -1,4 +1,4 @@
-package com.nobblecrafts.challenge.devsecopssr.config.test;
+package com.nobblecrafts.challenge.devsecopssr.config;
 
 import com.nobblecrafts.challenge.devsecopssr.config.FeignConfig;
 import com.nobblecrafts.challenge.devsecopssr.config.SecurityConfig;
